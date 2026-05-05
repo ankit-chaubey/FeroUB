@@ -1,0 +1,27 @@
+[package]
+name = "feroub"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "userbot"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+strip = true
+lto = true
+
+[dependencies]
+ferogram = { version = "0.3.8", features = ["sqlite-session", "html"] }
+tokio           = { version = "1", features = ["full"] }
+serde           = { version = "1", features = ["derive"] }
+toml            = "0.8"
+serde_json      = "1"
+chrono          = "0.4"
+futures         = "0.3"
+anyhow          = "1"
+rand            = "0.8"
+tempfile        = "3"
+dashmap         = "6"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }

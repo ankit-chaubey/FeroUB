@@ -1,0 +1,9 @@
+api_id       = 0
+api_hash     = ""
+session_path = "userbot.session"
+prefix       = "."
+save_dir     = "saved"
+bash_char_limit = 4000
+
+# Message shown when .afk is set (appended with custom reason if given)
+afk_msg      = "I'm AFK right now"
