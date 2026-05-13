@@ -13,7 +13,7 @@ strip = true
 lto = true
 
 [dependencies]
-ferogram = { version = "0.3.8", features = ["sqlite-session", "html"] }
+ferogram        = { version = "0.4.0", features = ["sqlite-session", "html"]}
 tokio           = { version = "1", features = ["full"] }
 serde           = { version = "1", features = ["derive"] }
 toml            = "0.8"

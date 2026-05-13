@@ -126,6 +126,7 @@ pub async fn atv(msg: &IncomingMessage, client: &Client) -> Result<()> {
                 title: None,
                 performer: None,
                 waveform: None,
+                voice: false,
             },
         )];
         tl::enums::InputMedia::UploadedDocument(d)
