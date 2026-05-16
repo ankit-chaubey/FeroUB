@@ -1,4 +1,4 @@
-use anyhow::{Result, bail};
+use anyhow::Result;
 use ferogram::Client;
 use ferogram::tl;
 
@@ -122,49 +122,6 @@ pub fn msg_id_from_enum(m: &tl::enums::Message) -> Option<i32> {
     }
 }
 
-/// Extract an InputFileLocation from a MessageMedia (for download_media_to_file).
-pub fn media_to_location(media: &tl::enums::MessageMedia) -> Result<tl::enums::InputFileLocation> {
-    match media {
-        tl::enums::MessageMedia::Document(d) => match &d.document {
-            Some(tl::enums::Document::Document(doc)) => {
-                Ok(tl::enums::InputFileLocation::InputDocumentFileLocation(
-                    tl::types::InputDocumentFileLocation {
-                        id: doc.id,
-                        access_hash: doc.access_hash,
-                        file_reference: doc.file_reference.clone(),
-                        thumb_size: String::new(),
-                    },
-                ))
-            }
-            _ => bail!("no document in media"),
-        },
-        tl::enums::MessageMedia::Photo(p) => match &p.photo {
-            Some(tl::enums::Photo::Photo(photo)) => {
-                let thumb = photo
-                    .sizes
-                    .iter()
-                    .rev()
-                    .find_map(|s| match s {
-                        tl::enums::PhotoSize::PhotoSize(s) => Some(s.r#type.clone()),
-                        _ => None,
-                    })
-                    .unwrap_or_else(|| "s".to_string());
-                Ok(tl::enums::InputFileLocation::InputPhotoFileLocation(
-                    tl::types::InputPhotoFileLocation {
-                        id: photo.id,
-                        access_hash: photo.access_hash,
-                        file_reference: photo.file_reference.clone(),
-                        thumb_size: thumb,
-                    },
-                ))
-            }
-            _ => bail!("no photo in media"),
-        },
-        _ => bail!("unsupported media type for download"),
-    }
-}
-
-/// Read a file to bytes for upload_file.
 pub fn read_bytes(path: &std::path::Path) -> Result<Vec<u8>> {
     Ok(std::fs::read(path)?)
 }

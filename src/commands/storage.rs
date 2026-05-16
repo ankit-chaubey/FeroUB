@@ -7,7 +7,7 @@ use ferogram::tl;
 use ferogram::update::IncomingMessage;
 
 use crate::state::AppState;
-use crate::util::{esc, media_to_location, random_id};
+use crate::util::{esc, random_id};
 
 pub async fn save(msg: &IncomingMessage, client: &Client, state: &Arc<AppState>) -> Result<()> {
     let target_id = msg
@@ -41,8 +41,7 @@ pub async fn save(msg: &IncomingMessage, client: &Client, state: &Arc<AppState>)
     let filename = filename_for_media(media, target_id);
     let path: PathBuf = [&state.config.save_dir, &filename].iter().collect();
 
-    let location = media_to_location(media)?;
-    client.download_file(location, &path).await?;
+    client.download_file(media, &path).await?;
 
     let abs_path = std::fs::canonicalize(&path).unwrap_or(path);
     let abs_str = abs_path.display().to_string();

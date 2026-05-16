@@ -8,8 +8,8 @@ use ferogram::update::IncomingMessage;
 
 use crate::state::AppState;
 use crate::util::{
-    media_to_location, messages_from_response, msg_id_from_enum, parse_src_arg, peer_from_id,
-    random_id, read_bytes, resolve_peer,
+    messages_from_response, msg_id_from_enum, parse_src_arg, peer_from_id, random_id, read_bytes,
+    resolve_peer,
 };
 
 pub async fn purge(
@@ -151,11 +151,10 @@ pub async fn get(msg: &IncomingMessage, client: &Client, args: &str) -> Result<(
     let caption = source.message.clone();
 
     if let Some(media) = &source.media {
-        let location = media_to_location(media)?;
         let tmp_dir = tempfile::tempdir()?;
         let tmp_path = tmp_dir.path().join("media_dl");
 
-        client.download_file(location, &tmp_path).await?;
+        client.download_file(media, &tmp_path).await?;
 
         let bytes = read_bytes(&tmp_path)?;
         let uploaded = client

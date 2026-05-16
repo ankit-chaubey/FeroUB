@@ -5,7 +5,7 @@ use ferogram::Client;
 use ferogram::tl;
 use ferogram::update::IncomingMessage;
 
-use crate::util::{media_to_location, random_id, read_bytes};
+use crate::util::{random_id, read_bytes};
 
 pub async fn vta(msg: &IncomingMessage, client: &Client) -> Result<()> {
     let media = get_replied_media(msg, client).await?;
@@ -16,8 +16,7 @@ pub async fn vta(msg: &IncomingMessage, client: &Client) -> Result<()> {
     let in_path = tmp_dir.path().join("input");
     let out_path = tmp_dir.path().join("output.mp3");
 
-    let location = media_to_location(&media)?;
-    client.download_file(location, &in_path).await?;
+    client.download_file(&media, &in_path).await?;
 
     ffmpeg_run(&[
         "-y",
@@ -94,8 +93,7 @@ pub async fn atv(msg: &IncomingMessage, client: &Client) -> Result<()> {
     let in_path = tmp_dir.path().join("input");
     let out_path = tmp_dir.path().join("output.ogg");
 
-    let location = media_to_location(&media)?;
-    client.download_file(location, &in_path).await?;
+    client.download_file(&media, &in_path).await?;
 
     ffmpeg_run(&[
         "-y",
